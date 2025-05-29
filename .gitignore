@@ -1,0 +1,17 @@
+# Python virtual environments
+taskenv/
+
+# Django stuff:
+db.sqlite3
+*.sqlite3
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# VSCode settings
+.vscode/
