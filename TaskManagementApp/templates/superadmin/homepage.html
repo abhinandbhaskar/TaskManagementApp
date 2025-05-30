@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}Page Title{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -12,7 +12,9 @@
         <div class="text-lg font-semibold">
             TaskManagement App <span  class="text-sm italic">(SuperAdmin)</span>
         </div>
-        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg">Logout</button>
+        <a href="{% url 'superadmin_logout' %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg inline-block">
+        Logout
+        </a> 
     </nav>
 
     <div class="flex">
@@ -20,24 +22,24 @@
         <aside class="bg-blue-100 w-64 min-h-screen px-4 py-6">
             <ul class="space-y-4">
                 <li>
-                    <button class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'superadmin_dashboard' %}" class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Dashboard
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'manage_users' %}" class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Manage Users
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'manage_admins' %}" class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Manage Admins
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'manage_tasks' %}"  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Manage Tasks
-                    </button>
+                    </a>
                 </li>
                 <li>
                     <button class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
@@ -48,6 +50,8 @@
         </aside>
 
         <main class="flex-1 p-6 space-y-6">
+
+             {% block body %}
 
             <div class="grid grid-cols-1 md:grid-cols lg:grid-cols-3 gap-6">
                 <div class="bg-white shadow rounded-lg p-4">
@@ -74,6 +78,7 @@
                 </div>
 
             </div>
+             {% endblock %}
 
         </main>
 

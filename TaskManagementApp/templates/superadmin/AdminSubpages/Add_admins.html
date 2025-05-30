@@ -1,0 +1,122 @@
+{% extends "superadmin/homepage.html" %}
+
+{% block title %} Manage Admins{% endblock %}
+
+{% block body %}
+
+{% if messages %}
+<div class="top-20 right-4 z-50 w-full max-w-xs">
+    {% for message in messages %}
+    <div class="text-white px-4 py-2 rounded-lg shadow-lg mb-2 
+        {% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div  class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold">Manage Admins</h2>
+    <div>
+         <a href="{% url 'manage_admins' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            View All Admins
+        </a>
+    </div>
+</div>
+
+<div  class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+<h1 class="text-2xl font-semibold text-center mb-4">Add New Admin</h1>
+<form action="{% url 'add_admins' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        <label for="username" class="block text-gray-700 font-medium mb-1">Adminname</label>
+        <input
+            type="text"
+            id="username"
+            name="username"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter username"
+            required
+        >
+    </div>
+
+        <div class="mb-4">
+        <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter email"
+            required
+        >
+    </div>
+
+        <div class="mb-4">
+        <label for="password" class="block text-gray-700 font-medium mb-1">Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter password"
+            required
+        >
+    </div>
+
+        <div class="mb-4">
+        <label for="confirm_password" class="block text-gray-700 font-medium mb-1">Confirm Password</label>
+        <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Confirm password"
+            required
+        >
+    </div>
+
+
+        <div class="mb-4">
+        <label for="username" class="block text-gray-700 font-medium mb-1">Role</label>
+        <select
+            id="role"
+            name="role"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+        >
+        <option value="">select role</option>
+        <option value="User">User</option>
+        <option value="Admin">Admin</option>
+        <option value="SuperAdmin">SuperAdmin</option>
+        </select>
+    </div>
+
+    <div class="mb-4">
+        <label for="username" class="block text-gray-700 font-medium mb-1">Status</label>
+        <select
+            id="status"
+            name="status"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+        >
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      
+        </select>
+    </div>
+
+
+
+    <div>
+        <button class="w-full bg-blue-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none">
+            Add Admin
+        </button>
+    </div>
+
+</form>
+</div>
+
+
+{% endblock %}

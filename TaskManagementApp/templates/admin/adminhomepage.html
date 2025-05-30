@@ -17,7 +17,11 @@
                 <p class="font-semibold">Admin Name</p>
                 <p class="italic">admin@gmail.com</p>
             </div>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg">Logout</button>
+
+            <a href="{% url 'admin_logoutpage' %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg inline-block">
+            Logout
+            </a> 
+            
         </div>
     </nav>
     <div class="flex">
