@@ -43,7 +43,7 @@ def create_admin(username,email,password):
 
 
 
-# user functions
+# user functions ----------------------------
 
 
 class UserTasksView(APIView):
@@ -101,7 +101,7 @@ class TaskReportView(APIView):
 
 
 
-#super admin functions
+#super admin functions ------------------------------------
 
 def superadmin_login_view(request):
     if request.method == "POST":
@@ -430,21 +430,7 @@ def complete_task_report(request,id):
 
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#admin functions
+#admin functions -----------------
 
 def admin_login_view(request):
     if request.method == "POST":
