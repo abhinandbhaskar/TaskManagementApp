@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{% if messages %}
+<!-- {% if messages %}
 <div class="top-20 right-4 z-50 w-full max-w-xs">
     {% for message in messages %}
     <div class="text-white px-4 py-2 rounded-lg shadow-lg mb-2 
@@ -13,7 +13,7 @@
     </div>
     {% endfor %}
 </div>
-{% endif %}
+{% endif %} -->
 
 <div  class="flex justify-between items-center mb-4">
     <h2 class="text-2xl font-semibold">Manage Admins</h2>
@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div  class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+<div  class="max-w-xl mx-auto bg-white shadow-md rounded-lg p-6">
 <h1 class="text-2xl font-semibold text-center mb-4">Add New Admin</h1>
 <form action="{% url 'add_admins' %}" method="POST">
     {% csrf_token %}

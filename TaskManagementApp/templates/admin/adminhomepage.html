@@ -8,14 +8,19 @@
 
 </head>
 <body class="bg-gray-100 font-sans">
-    <nav class="bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
+    <nav class="bg-violet-500 text-white px-4 py-3 flex justify-between items-center">
         <div class="text-lg font-semibold">
             TaskManagement App <span class="text-sm italic">(Admin)</span>
         </div>
+        <div class="flex items-center space-x-4">  <!-- Added flex and spacing -->
+        <a href="{% url 'admin_dashboard' %}" class="hover:bg-blue-700 px-3 py-1 border-2-white bg-blue-600 rounded transition">Dashboard</a>
+        <a href="{% url 'admin_manage_tasks' %}"  class="hover:bg-blue-700 px-3 py-1  bg-blue-600  rounded transition">Tasks</a>
+        <a href="{% url 'admin_view_tasks_reports' %}"  class="hover:bg-blue-700 px-3 py-1  bg-blue-600  rounded transition">Reports</a>
+    </div>
         <div class="flex items-center space-x-4">
             <div class="text-sm">
-                <p class="font-semibold">Admin Name</p>
-                <p class="italic">admin@gmail.com</p>
+                <p class="font-semibold">Welcome, {{ username }}!</p>
+                <p class="italic">Email : {{email}}</p>
             </div>
 
             <a href="{% url 'admin_logoutpage' %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg inline-block">
@@ -25,60 +30,30 @@
         </div>
     </nav>
     <div class="flex">
-        <aside class="bg-blue-100 w-64 min-h-screen px-4 py-6">
-            <ul class="space-y-4">
-                <li>
-                    <a href="{% url 'admin_dashboard' %}"  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'admin_manage_tasks' %}"   class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                        Tasks
-                    </a>
-                </li>
-                <li>
-                    <button  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                        Users
-                    </button>
-                </li>
-                <li>
-                    <button  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
-                        Reports
-                    </button>
-                </li>
-
-            </ul>
-        </aside>
+    
 
         <main class="flex-1 p-6 space-y-6">
                {% block body %}
             <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h2 class="text-lg font-semibold text-gray-700">Total Users</h2>
-                    <p class="text-2xl font-bold text-blue-500">80</p>
+                    <p class="text-2xl font-bold text-blue-500">{{user_count}}</p>
                 </div>
                  <div class="bg-white shadow rounded-lg p-4">
                     <h2 class="text-lg font-semibold text-gray-700">Pending Tasks</h2>
-                    <p class="text-2xl font-bold text-blue-500">25</p>
+                    <p class="text-2xl font-bold text-blue-500">{{pending_tasks}}</p>
                 </div>
                  <div class="bg-white shadow rounded-lg p-4">
                     <h2 class="text-lg font-semibold text-gray-700">Completed Tasks</h2>
-                    <p class="text-2xl font-bold text-blue-500">50</p>
+                    <p class="text-2xl font-bold text-blue-500">{{completed_tasks}}</p>
                 </div>
                  <div class="bg-white shadow rounded-lg p-4">
                     <h2 class="text-lg font-semibold text-gray-700">In Progress Tasks</h2>
-                    <p class="text-2xl font-bold text-blue-500">10</p>
+                    <p class="text-2xl font-bold text-blue-500">{{inprogress_tasks}}</p>
                 </div>
             </div>
 
-            <div class="bg-white shadow rounded-lg p-6">
-
-                <h2  class="text-lg font-semibold text-gray-700 mb-4">Task Report</h2>
-                <div class="h-64 flex items-center justify-center">
-                    <span class="text-gray-400 italic">Chart Placeholder</span>
-                </div>
-            </div>
+            
               {% endblock %}
         </main>
 

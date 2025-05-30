@@ -1,19 +1,12 @@
-{% extends "superadmin/homepage.html" %}
+{% extends "admin/adminhomepage.html" %}
 
 {% block title %} Manage Tasks{% endblock %}
 
 {% block body %}
 
 <div  class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-semibold">Manage Tasks</h2>
-    <div class="gap-2">
-         
-      
-         <a href="{% url 'add_superadmin_task' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-            Create Task
-        </a>
-
-    </div>
+    <h2 class="text-2xl font-semibold">Task Reports</h2>
+   
 </div>
 
 <div class="overflow-x-auto bg-white shadow rounded-lg p-4">
@@ -27,7 +20,7 @@
                          <th class="px-4 py-2 text-left text-sm font-semibold">Assigned by</th>
                          <th class="px-4 py-2 text-left text-sm font-semibold">Due date</th>
                          <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
-                         <th class="px-4 py-2 text-left text-sm font-semibold">view task</th>
+                         <th class="px-4 py-2 text-left text-sm font-semibold">view task Report</th>
                 </tr>
 
             </thead>
@@ -43,7 +36,7 @@
                     <td  class="px-4 py-2 text-sm">{{task.due_date}}</td>
                     <td  class="px-4 py-2 text-sm">{{task.status}}</td>
                     <td  class="px-4 py-2 text-sm">
-                    <a  href="{% url 'view_task_details' task.id %}" class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition duration-200">view task</a>
+                    <a  href="{% url 'admin_complete_task_report' task.id %}" class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition duration-200">view task</a>
                     </td>
                 </tr>
                 {% endfor %}

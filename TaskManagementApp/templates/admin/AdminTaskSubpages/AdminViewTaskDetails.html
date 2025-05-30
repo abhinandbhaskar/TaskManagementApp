@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container mx-auto px-4 py-8">
-    {% if messages %}
+    <!-- {% if messages %}
     <div class="fixed top-20 right-4 z-50 w-full max-w-xs">
 
         {% for message in messages %}
@@ -14,18 +14,18 @@
         </div>
         {% endfor %}
     </div>
-    {% endif %}
+    {% endif %} -->
 
     <div class="flex flex-col md:flex-row justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold mb-4 md:mb-0">Manage Tasks</h2>
         <div>
-            <a href="{% url 'manage_tasks' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+            <a href="{% url 'admin_manage_tasks' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
                 View All Tasks
             </a>
         </div>
     </div>
 
-    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="max-w-xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div class="text-white px-6 py-4">
             <h1 class="text-2xl text-black font-semibold text-center">Update & Assign Task</h1>
         </div>

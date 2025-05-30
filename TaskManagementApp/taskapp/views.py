@@ -5,6 +5,14 @@ from django.contrib import messages
 from django.http import HttpResponse
 from taskapp.models import CustomUser,AdminUserMapping,Task
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import status
+from .models import Task
+from taskapp.serializers import TaskSerializer
+from datetime import date
+
 def create_users(request):
     create_superadmin('superadmin','superadmin@gmail.com','superadminpassword')
     create_admin('admin','admin@gmail.com','adminpassword')
@@ -31,6 +39,61 @@ def create_admin(username,email,password):
 
 
 
+
+
+
+
+# user functions
+
+
+class UserTasksView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        tasks=Task.objects.filter(assigned_to=request.user)
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+class UpdateTaskStatusView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def put(self,request,id):
+        try:
+            task = Task.objects.get(id=id,assigned_to=request.user)
+        except Task.DoesNotExist:
+            return Response({"error":"Task not found or you are not authorized to update it."},status=status.HTTP_404_NOT_FOUND)
+        status_update = request.data.get("status")
+        completion_report=request.data.get("completion_report")
+        worked_hours = request.data.get("worked_hours")
+
+        if status_update == "Completed":
+            if not completion_report or not worked_hours:
+                return Response({"error":"Completion Report and Worked Hours are required to mark a task as Completed."},status=status.HTTP_400_BAD_REQUEST)
+            task.completion_report = completion_report
+            task.worked_hours = worked_hours
+        task.status = status_update
+        task.save()
+        return Response({"message":"Task updated successfully."},status=status.HTTP_200_OK)
+    
+
+
+class TaskReportView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request, id):
+        try:
+            task = Task.objects.get(id=id,status="Completed")
+        except Task.DoesNotExist:
+            return Response({"error":"Task not found or not marked as Completed."},status=status.HTTP_404_NOT_FOUND)
+        
+        data = {
+            "title":task.title,
+            "description":task.description,
+            "worked_hours":task.worked_hours,
+            "completion_report":task.completion_report,
+        }
+        return Response(data,status=status.HTTP_200_OK)
 
 
 
@@ -63,7 +126,17 @@ def loginpage(request):
     return render(request,'superadmin/loginpage.html')
 
 def superadmin_dashboard(request):
-    return render(request,'superadmin/homepage.html')
+    users_count=CustomUser.objects.filter(role="User").count()
+    admin_count=CustomUser.objects.filter(role="Admin").count()
+    tasks_count=Task.objects.all().count()
+    tasks=Task.objects.filter(status="Completed")
+    context={
+        "users_count":users_count,
+        "admin_count":admin_count,
+        "tasks_count":tasks_count,
+        "tasks":tasks
+    }
+    return render(request,'superadmin/homepage.html',context)
 
 def manage_users(request):
     users=CustomUser.objects.filter(role='User')
@@ -346,6 +419,26 @@ def view_task_details(request,id):
 
 
 
+def view_all_tasks_report(request):
+    tasks=Task.objects.filter(status="Completed")
+    return render(request,'superadmin/TasksSubpages/ViewAllTaskReports.html',{"tasks":tasks})
+
+def complete_task_report(request,id):
+    tasks=Task.objects.get(id=id)
+    return render(request,'superadmin/TasksSubpages/TaskReport.html',{"tasks":tasks})
+
+
+
+    
+
+
+
+
+
+
+
+
+
 
 
 
@@ -374,7 +467,19 @@ def adminloginpage(request):
     return render(request,'admin/adminloginpage.html')
 
 def admin_dashboard(request):
-    return render(request,'admin/adminhomepage.html')
+    user_count=CustomUser.objects.filter(role="User").count()
+    pending_tasks=Task.objects.filter(status='Pending',created_by=request.user).count()
+    completed_tasks=Task.objects.filter(status='Completed',created_by=request.user).count()
+    inprogress_tasks=Task.objects.filter(status='In Progress',created_by=request.user).count()
+    context = {
+        'user_count': user_count,
+        'pending_tasks': pending_tasks,
+        'completed_tasks': completed_tasks,
+        'inprogress_tasks': inprogress_tasks,
+        "username":request.user.username,
+        "email":request.user.email
+    }
+    return render(request,'admin/adminhomepage.html',context)
 
 
 
@@ -444,6 +549,10 @@ def view_admintask_details(request,id):
     return render(request, 'admin/AdminTaskSubpages/AdminViewTaskDetails.html', {"task":task,"managed_users": managed_users})
 
 
+def admin_view_tasks_reports(request):
+    tasks=Task.objects.filter(status="Completed",created_by=request.user)
+    return render(request,'admin/AdminTaskSubpages/AdminViewAllTaskReports.html',{"tasks":tasks})
 
-
-
+def admin_complete_task_report(request,id):
+    tasks=Task.objects.get(id=id)
+    return render(request,'admin/AdminTaskSubpages/AdminCompleteTaskReport.html',{"tasks":tasks})

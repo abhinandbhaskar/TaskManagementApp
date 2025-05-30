@@ -39,10 +39,10 @@
                    
 
                     <td class="px-4 py-2 text-sm">
-                        <ol>
+                        <ol class="space-y-2">
                             {% for mapping in admin.assigned_users.all %}
-                            <li class="flex items-center gap-2">
-                                {{ mapping.user.username }}
+                            <li class="flex items-center justify-between gap-4">
+                                 <span class="font-medium">{{ mapping.user.username }}</span>
                                 <form method="post" action="{% url 'remove_user_from_admin' admin.id mapping.user.id %}" class="inline">
                                     {% csrf_token %}
                                     <button type="submit" class="bg-red-500 text-white px-1 py-0 rounded-md hover:bg-red-600 transition duration-200" 
