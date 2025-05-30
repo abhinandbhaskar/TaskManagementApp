@@ -1,0 +1,63 @@
+{% extends "admin/adminhomepage.html" %}
+
+{% block title %} Manage Tasks{% endblock %}
+
+{% block body %}
+
+<div  class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold">Manage Tasks</h2>
+    <div class="gap-2">
+         
+        <a href="{% url 'add_user' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            View all task
+        </a>
+         <a href="{% url 'add_user' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            Completed task
+        </a>
+         <a href="{% url 'add_user' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            Pending task
+        </a>
+         <a href="{% url 'add_admin_task' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            Create Task
+        </a>
+
+    </div>
+</div>
+
+<div class="overflow-x-auto bg-white shadow rounded-lg p-4">
+    <table class="min-w-full border border-gray-300 rounded-lg">
+            <thead class="bg-gray-100 border-b border-gray-300">
+                <tr>
+                     <th class="px-4 py-2 text-left text-sm font-semibold">Task ID</th>
+                      <th class="px-4 py-2 text-left text-sm font-semibold">Title</th>
+                       <th class="px-4 py-2 text-left text-sm font-semibold">Description</th>
+                        <th class="px-4 py-2 text-left text-sm font-semibold">Assigned to</th>
+                         <th class="px-4 py-2 text-left text-sm font-semibold">Assigned by</th>
+                         <th class="px-4 py-2 text-left text-sm font-semibold">Due date</th>
+                         <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
+                         <th class="px-4 py-2 text-left text-sm font-semibold">view task</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+
+                <tr class="border-b border-gray-300 hover:bg-gray-50">
+                    <td  class="px-4 py-2 text-sm">{{task.id}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.title}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.description}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.assigned_to}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.created_by.username}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.due_date}}</td>
+                    <td  class="px-4 py-2 text-sm">{{task.status}}</td>
+                    <td  class="px-4 py-2 text-sm">
+                    <a  href="{% url 'view_admintask_details' task.id %}" class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition duration-200">view & assign task</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

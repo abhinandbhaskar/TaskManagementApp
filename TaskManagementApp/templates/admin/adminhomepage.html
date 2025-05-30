@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Homepage</title>
+    <title> {% block title %}Admin Homepage{% endblock %} </title>
     <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
@@ -28,14 +28,14 @@
         <aside class="bg-blue-100 w-64 min-h-screen px-4 py-6">
             <ul class="space-y-4">
                 <li>
-                    <button  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'admin_dashboard' %}"  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Dashboard
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <a href="{% url 'admin_manage_tasks' %}"   class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Tasks
-                    </button>
+                    </a>
                 </li>
                 <li>
                     <button  class="w-full text-left bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
@@ -52,6 +52,7 @@
         </aside>
 
         <main class="flex-1 p-6 space-y-6">
+               {% block body %}
             <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h2 class="text-lg font-semibold text-gray-700">Total Users</h2>
@@ -78,7 +79,7 @@
                     <span class="text-gray-400 italic">Chart Placeholder</span>
                 </div>
             </div>
-
+              {% endblock %}
         </main>
 
     </div>

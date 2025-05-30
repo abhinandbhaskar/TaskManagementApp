@@ -158,38 +158,6 @@ def edit_user(request,id):
 
 
 
-
-
-
-
-
-#admin functions
-
-def admin_login_view(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request,username=username,password=password)
-        if user is not None and user.is_admin:
-            login(request, user)
-            return redirect('admin_dashboard')
-        else:
-            return render(request, 'admin/adminloginpage.html',{'error':'Invalid credentials'})
-    return render(request, 'admin/adminloginpage.html')
-
-def admin_logout_view(request):
-    logout(request)
-    return redirect('adminloginpage')
-
-
-def adminloginpage(request):
-    return render(request,'admin/adminloginpage.html')
-
-def admin_dashboard(request):
-    return render(request,'admin/adminhomepage.html')
-
-
-
 def manage_admins(request):
     admins=CustomUser.objects.filter(role='Admin')
     users=CustomUser.objects.filter(role="User",is_active=True)
@@ -380,6 +348,100 @@ def view_task_details(request,id):
 
 
 
+
+
+
+#admin functions
+
+def admin_login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request,username=username,password=password)
+        if user is not None and user.is_admin:
+            login(request, user)
+            return redirect('admin_dashboard')
+        else:
+            return render(request, 'admin/adminloginpage.html',{'error':'Invalid credentials'})
+    return render(request, 'admin/adminloginpage.html')
+
+def admin_logout_view(request):
+    logout(request)
+    return redirect('adminloginpage')
+
+
+def adminloginpage(request):
+    return render(request,'admin/adminloginpage.html')
+
+def admin_dashboard(request):
+    return render(request,'admin/adminhomepage.html')
+
+
+
+def admin_manage_tasks(request):
+    tasks=Task.objects.filter(created_by=request.user)
+    return render(request,'admin/AdminTaskSubpages/AdminManageTasks.html',{"tasks": tasks})
+
+
+from datetime import datetime
+
+def add_admin_task(request):
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        due_date_str = request.POST.get("due_date")
+      
+
+        if not title or not description or not due_date_str:
+            messages.error(request,"All fields are required.")
+            return redirect('add_admin_task') 
+        try:
+            due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
+            Task.objects.create(title=title,description=description,due_date=due_date,created_by=request.user,status='Pending')
+
+            messages.success(request,"task added successfully!")
+        except Exception as e:
+            messages.error(request,f"Error creating task {str(e)}")
+            return redirect('add_admin_task')
+        
+        return redirect('admin_manage_tasks')
+    return render(request, 'admin/AdminTaskSubpages/AdminCreateTask.html')
+
+
+
+
+
+
+def view_admintask_details(request,id):
+    task =  get_object_or_404(Task, id=id)
+
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        due_date = request.POST.get("due_date")
+        userid = request.POST.get("userid")
+        status = request.POST.get("status")
+
+        if not title or not description or not due_date or not status or not userid:
+            messages.error(request, "All fields are required.")
+            return redirect('view_admintask_details', id=id)
+                
+        try:
+            userobj=CustomUser.objects.get(id=userid)
+            task.title = title
+            task.description = description
+            task.due_date = due_date
+            task.status = status
+            task.assigned_to =userobj
+            task.save()
+            messages.success(request, "Task updated successfully!")
+        except Exception as e:
+            messages.error(request, f"Error updating user: {str(e)}")
+            return redirect('view_admintask_details', id=id)
+        
+    admin_mappings = AdminUserMapping.objects.filter(admin=request.user)
+    managed_users = [mapping.user for mapping in admin_mappings]
+    return render(request, 'admin/AdminTaskSubpages/AdminViewTaskDetails.html', {"task":task,"managed_users": managed_users})
 
 
 

@@ -1,0 +1,113 @@
+{% extends "admin/adminhomepage.html" %}
+
+{% block title %}Manage Tasks{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    {% if messages %}
+    <div class="fixed top-20 right-4 z-50 w-full max-w-xs">
+
+        {% for message in messages %}
+        <div class="text-white px-4 py-2 rounded-lg shadow-lg mb-2 
+            {% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold mb-4 md:mb-0">Manage Tasks</h2>
+        <div>
+            <a href="{% url 'manage_tasks' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+                View All Tasks
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="text-white px-6 py-4">
+            <h1 class="text-2xl text-black font-semibold text-center">Update & Assign Task</h1>
+        </div>
+        <div class="p-6">
+           <form action="{% url 'view_admintask_details' id=task.id %}" method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 font-medium mb-2">Task Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{task.title}}"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        placeholder="Enter task title"
+                        required
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="4"
+                        value="{{task.description}}"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        placeholder="Enter task description"
+                        required
+                    >{{task.description}}</textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label for="due_date" class="block text-gray-700 font-medium mb-2">Due Date</label>
+                    <input
+                        type="date"
+                        id="due_date"
+                        name="due_date"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        required
+                        min="{{ today|date:'Y-m-d' }}"
+                        value="{{task.due_date|date:'Y-m-d'}}"
+                    >
+                </div>
+
+                  <div class="mb-4">
+                    <label for="userid" class="block text-gray-700 font-medium mb-2">Assign User</label>
+                    <select
+                        id="userid"
+                        name="userid"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        required
+                    >
+                        {% for user in managed_users %}
+                        <option value="{{ user.id }}" {% if task.assigned_to.id == user.id %}selected{% endif %}>
+                            {{ user.username }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
+                    <select
+                        id="status"
+                        name="status"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                        required>
+                        <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full bg-blue-500 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                        Make Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -34,12 +34,7 @@ urlpatterns = [
     path('delete_user/<int:id>/', views.delete_user, name="delete_user"),
     path('edit_user/<int:id>/', views.edit_user, name="edit_user"),
 
-    #admin urls
 
-    path('adminloginpage/',views.adminloginpage,name="adminloginpage"),
-    path('admin_login_view/', views.admin_login_view, name='admin_login_view'),
-    path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
-    path('admin_logoutpage/',views.admin_logout_view,name="admin_logoutpage"),
 
     path('manage_admins/',views.manage_admins,name="manage_admins"),
     path('add_admins/',views.add_admins,name="add_admins"),
@@ -51,6 +46,20 @@ urlpatterns = [
     path('manage_tasks',views.manage_tasks,name="manage_tasks"),
     path('add_superadmin_task',views.add_superadmin_task,name="add_superadmin_task"),
     path('view_task_details/<int:id>/', views.view_task_details, name="view_task_details"),
+
+
+        #admin urls
+
+    path('adminloginpage/',views.adminloginpage,name="adminloginpage"),
+    path('admin_login_view/', views.admin_login_view, name='admin_login_view'),
+    path('admin_dashboard/',views.admin_dashboard,name="admin_dashboard"),
+    path('admin_logoutpage/',views.admin_logout_view,name="admin_logoutpage"),
+
+    path('admin_manage_tasks',views.admin_manage_tasks,name="admin_manage_tasks"),
+    path('add_admin_task',views.add_admin_task,name="add_admin_task"),
+    path('view_admintask_details/<int:id>/', views.view_admintask_details, name="view_admintask_details"),
+
+
     
 
 
