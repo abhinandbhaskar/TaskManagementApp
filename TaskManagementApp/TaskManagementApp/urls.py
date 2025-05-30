@@ -16,7 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from taskapp.views import loginpage,homepage
+from taskapp.views import adminloginpage,adminhomepage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #superadmin urls
+    path('loginpage/',loginpage,name='loginpage'),
+    path('homepage/',homepage,name='homepage'),
+
+    #admin urls
+
+    path('adminloginpage/',adminloginpage,name="adminloginpage"),
+    path('adminhomepage/',adminhomepage,name="adminhomepage")
+
+
+
 ]

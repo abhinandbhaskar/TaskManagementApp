@@ -29,6 +29,23 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'taskapp.CustomUser'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',  # For token-based auth (optional)
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+]
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'taskapp'
+    'taskapp',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +74,7 @@ ROOT_URLCONF = 'TaskManagementApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR,"templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
